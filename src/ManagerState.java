@@ -237,7 +237,9 @@ private void addProductMenu() {
     pPriceField = new JTextField(10);
     pQuantField = new JTextField(10);
     addPButton = new JButton("Add Product");
+    back = new JButton("Back");
     addPButton.addActionListener(this);
+    back.addActionListener(this);
     frame.getContentPane().setLayout(new FlowLayout());
     
     frame.add(this.pNameLabel);
@@ -249,6 +251,7 @@ private void addProductMenu() {
     frame.add(this.pQuantLabel);
     frame.add(this.pQuantField);
     frame.add(this.addPButton);
+    frame.add(this.back);
     frame.setVisible(true);
     frame.paint(frame.getGraphics());
     frame.toFront();
@@ -273,6 +276,8 @@ private void addSupplierMenu() {
     sAddressField = new JTextField(10);
     addSButton = new JButton("Add Supplier");
     addSButton.addActionListener(this);
+    back = new JButton("Back");
+    back.addActionListener(this);
     frame.getContentPane().setLayout(new FlowLayout());
     
     
@@ -283,6 +288,7 @@ private void addSupplierMenu() {
     frame.add(this.sAddressField);
     frame.add(Box.createHorizontalStrut(10));
     frame.add(this.addSButton);
+    frame.add(this.back);
     frame.setVisible(true);
     frame.paint(frame.getGraphics());
     frame.toFront();
@@ -348,10 +354,13 @@ public void productSuppliedMenu() {
     PIDField = new JTextField(10);
     addPIDButton = new JButton("Show");
     addPIDButton.addActionListener(this);
+    back = new JButton("Back");
+    back.addActionListener(this);
     frame.getContentPane().setLayout(new FlowLayout());
     productSuppliedPanel.add(this.PIDLabel);
     productSuppliedPanel.add(this.PIDField);
     productSuppliedPanel.add(this.addPIDButton);
+    productSuppliedPanel.add(this.back);
     frame.add(productSuppliedPanel);
     frame.setVisible(true);
     frame.paint(frame.getGraphics());
@@ -433,10 +442,13 @@ public void supplierSuppliedProductMenu() {
     SIDField = new JTextField(10);
     addSIDButton = new JButton("Show");
     addSIDButton.addActionListener(this);
+    back = new JButton("Back");
+    back.addActionListener(this);
     frame.getContentPane().setLayout(new FlowLayout());
     supplierSuppliedPanel.add(this.SIDLabel);
     supplierSuppliedPanel.add(this.SIDField);
     supplierSuppliedPanel.add(this.addSIDButton);
+    supplierSuppliedPanel.add(this.back);
     frame.getContentPane().add(supplierSuppliedPanel);
     frame.setVisible(true);
     frame.paint(frame.getGraphics());
@@ -513,11 +525,14 @@ public void updateProductMenu() {
     updateSIDField = new JTextField(10);
     updatePButton = new JButton("Show");
     updatePButton.addActionListener(this);
+    back = new JButton("Back");
+    back.addActionListener(this);
     frame.getContentPane().setLayout(new FlowLayout());
     updateProductMenuPanel.add(this.updateProductLabel);
     updateProductMenuPanel.add(this.updateSIDLabel);
     updateProductMenuPanel.add(this.updateSIDField);
     updateProductMenuPanel.add(this.updatePButton);
+    updateProductMenuPanel.add(this.back);
     frame.getContentPane().add(updateProductMenuPanel);
     frame.setVisible(true);
     frame.paint(frame.getGraphics());
@@ -607,10 +622,13 @@ public void renameProductMenu() {
     renamePMField = new JTextField(10);
     renamePMButton = new JButton("rename");
     renamePMButton.addActionListener(this);
+    back = new JButton("Back");
+    back.addActionListener(this);
     frame.getContentPane().setLayout(new FlowLayout());
     renameProductMenuPanel.add(this.renamePMLabel);
     renameProductMenuPanel.add(this.renamePMField);
     renameProductMenuPanel.add(this.renamePMButton);
+    renameProductMenuPanel.add(this.back);
     frame.getContentPane().add(renameProductMenuPanel);
     frame.setVisible(true);
     frame.paint(frame.getGraphics());
@@ -636,10 +654,13 @@ public void changeProductPriceMenu() {
     changePPField = new JTextField(10);
     changePPButton = new JButton("Change Price");
     changePPButton.addActionListener(this);
+    back = new JButton("Back");
+    back.addActionListener(this);
     frame.getContentPane().setLayout(new FlowLayout());
     changeProductPriceMenuPanel.add(this.changePPLabel);
     changeProductPriceMenuPanel.add(this.changePPField);
     changeProductPriceMenuPanel.add(this.changePPButton);
+    changeProductPriceMenuPanel.add(this.back);
     frame.getContentPane().add(changeProductPriceMenuPanel);
     frame.setVisible(true);
     frame.paint(frame.getGraphics());

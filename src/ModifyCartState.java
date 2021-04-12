@@ -214,7 +214,8 @@ public class ModifyCartState extends WarehouseState  implements ActionListener{
 	    quantityField = new JTextField(10);
 	    quantityLabel = new JLabel("Quantity:");
 	    ProductIdLabel = new JLabel("Product ID:");
-	    
+	    back = new JButton("Back");
+	    back.addActionListener(this);
 	    frame.add(this.ProductIdLabel);
 	    frame.add(this.productIdField);
 	    frame.add(Box.createHorizontalStrut(10));
@@ -222,6 +223,7 @@ public class ModifyCartState extends WarehouseState  implements ActionListener{
 	    frame.add(this.quantityField);
 	    frame.add(Box.createHorizontalStrut(10));
 	    frame.add(this.continueProcessing);
+	    frame.add(this.back);
 	    frame.setVisible(true);
 	    frame.paint(frame.getGraphics());
 	    frame.toFront();
@@ -253,12 +255,14 @@ public class ModifyCartState extends WarehouseState  implements ActionListener{
         addItemPIDField = new JTextField(10);
         addItemQuantField = new JTextField(10);
 	    frame.getContentPane().setLayout(new FlowLayout());
-	    
+	    back = new JButton("Back");
+	    back.addActionListener(this);
 	    frame.add(this.addItemPIDLabel);
 	    frame.add(this.addItemPIDField);
 	    frame.add(this.addItemQuantLabel);
 	    frame.add(this.addItemQuantField);
 	    frame.add(this.addToCart);
+	    frame.add(this.back);
 	    frame.setVisible(true);
 	    frame.paint(frame.getGraphics());
 	    frame.toFront();
@@ -284,11 +288,13 @@ public class ModifyCartState extends WarehouseState  implements ActionListener{
         removeItemPIDLabel = new JLabel("Poduct Id:");
         removeFromCart = new JButton("Remove from cart");
         removeItemPIDField = new JTextField(10);
-	    
+        back = new JButton("Back");
+	    back.addActionListener(this);
 	    updateCartPanel.add(this.removeItemPIDLabel);
 	    updateCartPanel.add(this.removeItemPIDField);
 	    frame.add(updateCartPanel);
 	    frame.add(this.removeFromCart);
+	    frame.add(this.back);
 	    frame.setVisible(true);
 	    frame.paint(frame.getGraphics());
 	    frame.toFront();

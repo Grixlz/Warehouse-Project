@@ -125,7 +125,7 @@ public void showAllClients() {
             JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS));
     back = new JButton("Back");
     back.addActionListener(this);
-    textbox.add(back);
+    textbox.add(this.back);
     frame.add(textbox);
     frame.setVisible(true); 
     frame.paint(frame.getGraphics());
@@ -165,7 +165,9 @@ public void showClientsWithOutstanding() {
             JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS));
     back = new JButton("Back");
     back.addActionListener(this);
-    textbox.add(back);
+    textbox.add(this.back);
+    textArea.setAlignmentX(Component.CENTER_ALIGNMENT);
+    back.setAlignmentX(Component.CENTER_ALIGNMENT);
     frame.add(textbox);
     frame.setVisible(true); 
     frame.paint(frame.getGraphics());
@@ -209,7 +211,9 @@ public void showClientsNoTransactions() {
             JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS));
     back = new JButton("Back");
     back.addActionListener(this);
-    textbox.add(back);
+    textbox.add(this.back);
+    textArea.setAlignmentX(Component.CENTER_ALIGNMENT);
+    back.setAlignmentX(Component.CENTER_ALIGNMENT);
     frame.add(textbox);
     frame.setVisible(true); 
     frame.paint(frame.getGraphics());

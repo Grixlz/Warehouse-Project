@@ -170,13 +170,15 @@ public class ClerkState extends WarehouseState implements ActionListener{
         JPanel updateCartPanel = new JPanel();
         BoxLayout boxlayout = new BoxLayout(updateCartPanel, BoxLayout.Y_AXIS);
         updateCartPanel.setLayout(boxlayout);
-        
         addClientLabel = new JLabel("Add Client");
         addNameLabel = new JLabel("Client Name:");
         addAddressLabel = new JLabel("Client Address");
-        addClientConfirmButton = new JButton("Add to Cart");
+        back = new JButton("Back");
+        addClientConfirmButton = new JButton("Add Client");
         addNameFielf = new JTextField(10);
         addAddressField = new JTextField(10);
+        addClientConfirmButton.addActionListener(this);
+        back.addActionListener(this);
 	    frame.getContentPane().setLayout(new FlowLayout());
 	    frame.add(Box.createHorizontalStrut(6));
 	    frame.add(this.addNameLabel);
@@ -187,12 +189,13 @@ public class ClerkState extends WarehouseState implements ActionListener{
 	    frame.add(this.addAddressField);
 	    frame.add(Box.createHorizontalStrut(85));
 	    frame.add(this.addClientConfirmButton);
+	    frame.add(this.back);
 	    frame.setVisible(true);
 	    frame.paint(frame.getGraphics());
 	    frame.toFront();
 	    frame.requestFocus();
 	    
-	    addClientConfirmButton.addActionListener(this);
+	    
 	}
 	
 	private void addClient(String name, String address)
@@ -205,6 +208,7 @@ public class ClerkState extends WarehouseState implements ActionListener{
 	{
 		clear();
     	JPanel textbox = new JPanel();
+    	JPanel butttonBox = new JPanel();
     	frame = WarehouseContext.instance().getFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         textArea = new JTextArea(15, 30);
@@ -212,6 +216,9 @@ public class ClerkState extends WarehouseState implements ActionListener{
                 JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS));
         back = new JButton("Back");
         back.addActionListener(this);
+        textArea.setAlignmentX(Component.CENTER_ALIGNMENT);
+        back.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    frame.add(Box.createHorizontalStrut(15));
         textbox.add(back);
         frame.add(textbox);
         frame.setVisible(true); 
@@ -255,11 +262,16 @@ public class ClerkState extends WarehouseState implements ActionListener{
 	    pWaitLabel = new JLabel("Enter Product ID:");
 	    pWaitIDField = new JTextField(10);
 	    pWaitIDButton = new JButton("Enter");
+	    back = new JButton("Back");
 	    pWaitIDButton.addActionListener(this);
+	    back.addActionListener(this);
 	    frame.getContentPane().setLayout(new FlowLayout());
+	    pWaitLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 	    frame.add(pWaitLabel);
 	    frame.add(pWaitIDField);
+	    frame.add(Box.createHorizontalStrut(110));
 	    frame.add(pWaitIDButton);
+	    frame.add(back);
 	    frame.setVisible(true);
 	    frame.paint(frame.getGraphics());
 	    frame.toFront();
@@ -314,8 +326,6 @@ public class ClerkState extends WarehouseState implements ActionListener{
 		}
 	}
 	
-	
-	
 	private void shipProductFromSupplierMenu() {
 		clear();
     	frame = WarehouseContext.instance().getFrame();
@@ -324,10 +334,13 @@ public class ClerkState extends WarehouseState implements ActionListener{
 		ShipProdLabel = new JLabel("Supplier ID:");
 		shipeProdField = new JTextField(10);
 		shipProdButton = new JButton("Enter");
+		back = new JButton("Back");
 		shipProdButton.addActionListener(this);
+		back.addActionListener(this);
 		shipProdPanel.add(ShipProdLabel);
 		shipProdPanel.add(shipeProdField);
 		shipProdPanel.add(shipProdButton);
+		shipProdPanel.add(back);
 		frame.add(shipProdPanel);
 		frame.setVisible(true);
 	    frame.paint(frame.getGraphics());
@@ -459,11 +472,14 @@ public class ClerkState extends WarehouseState implements ActionListener{
 	    CIDLabel = new JLabel("Enter Client ID:");
 	    CIDField = new JTextField(10);
 	    CIDButton = new JButton("Enter");
+	    back = new JButton("Back");
 	    CIDButton.addActionListener(this);
+	    back.addActionListener(this);
 	    frame.getContentPane().setLayout(new FlowLayout());
 	    frame.add(CIDLabel);
 	    frame.add(CIDField);
 	    frame.add(CIDButton);
+	    frame.add(back);
 	    frame.setVisible(true);
 	    frame.paint(frame.getGraphics());
 	    frame.toFront();

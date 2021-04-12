@@ -121,10 +121,13 @@ public void actionPerformed(ActionEvent event) {
 	    clientLoginButton = new JButton("Login");
 	    clientIdField = new JTextField(10);
 	    frame.getContentPane().setLayout(new FlowLayout());
-	    cleintLogin.add(this.clientLoginButton);
+	    back = new JButton("Back");
+        back.addActionListener(this);
 	    clientLoginButton.addActionListener(this);
 	    cleintLogin.add(this.clientLoginLabel);
 	    cleintLogin.add(this.clientIdField);
+	    cleintLogin.add(clientLoginButton);
+	    cleintLogin.add(back);
 	    cleintLogin.setVisible(true);
 	    cleintLogin.paint(cleintLogin.getGraphics());
 	    frame.toFront();

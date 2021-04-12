@@ -25,17 +25,13 @@ public class WarehouseContext {
     
     private WarehouseContext()
 	{
-        //Gets data
-		/*boolean option = promptYesNo("\nDo you wish to load user data?");
-		if (option)
-		{*/
-			retrieve();
-		/*}
-		else
-		{
-			warehouse = Warehouse.getInstance();
-		}*/
-
+    	wareFrame = new JFrame("Warehouse");
+        wareFrame.addWindowListener(new WindowAdapter()
+        	{public void windowClosing(WindowEvent e){System.exit(0);}});
+        wareFrame.setSize(400,400);
+        wareFrame.setLocation(400, 400);
+        wareFrame.setResizable(false);
+        retrieve();
         // set up the FSM
         states = new WarehouseState[6];
         states[0] = ClientState.instance();       // Access to Clerk[1], Login[3], ModifyCart[4]
@@ -54,11 +50,7 @@ public class WarehouseContext {
         nextState[4][0] =  0;  nextState[4][1] = -2;  nextState[4][2] = -2;  nextState[4][3] = -2;  nextState[4][4] = -2;  nextState[4][5] = -2;
         nextState[5][0] = -2;  nextState[5][1] =  1;  nextState[5][2] = -2;  nextState[5][3] = -2;  nextState[5][4] = -2;  nextState[5][5] = -2;
         currentState = 3;
-        wareFrame = new JFrame("Warehouse");
-        wareFrame.addWindowListener(new WindowAdapter()
-        	{public void windowClosing(WindowEvent e){System.exit(0);}});
-        wareFrame.setSize(400,400);
-        wareFrame.setLocation(400, 400);
+        
 	}
 
     public static WarehouseContext instance() {
