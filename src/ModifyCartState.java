@@ -1,14 +1,27 @@
-// Tyler
+import java.util.*;
 import java.util.*;
 import java.io.*;
-import java.text.SimpleDateFormat;
+import javax.swing.*;
+import java.text.*;
+import java.awt.*;
+import java.awt.event.*;
 
-public class ModifyCartState extends WarehouseState {
-    private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));  
+public class ModifyCartState extends WarehouseState  implements ActionListener{
     private static ModifyCartState instance;
 
     private final String LINE_ITEM_FORMAT = "%-4s   %-4s | %-20s | %-10s | %-10s | %-10s";
 
+    //GUI
+    private JFrame frame;
+    private AbstractButton showCartButton, changeCartButton, addCartButton, removeCartButton, Logout, back, addToCart, continueProcessing, removeFromCart;
+    static JFrame clientMenu;
+    static JLabel clientMenuLabel, updateCartLabel, itemNumberLabel, quantityLabel, ProductIdLabel, addItemPIDLabel, addItemQuantLabel, removeItemPIDLabel;
+    static JTextField productIdField, quantityField, addItemPIDField, addItemQuantField,removeItemPIDField;
+    private JTextArea textArea;
+    
+    
+    
+    
 	private ModifyCartState()
 	{
         super();
@@ -21,57 +34,118 @@ public class ModifyCartState extends WarehouseState {
       return instance;
     }
 //====================================================================
-// Options
+// GUI
 //====================================================================
-private enum Option
-{ 
-    SHOW_CART("Show cart"),
-    ADD_CART("Add product to cart"),
-    REMOVE_CART("Remove product from cart"),
-    CHANGE_CART("Change product quantity in cart"),
-    HELP("Display the help menu"),
-    EXIT("Logout");
-
-    private String description;
-    private static int LENGTH = Option.values().length;
-
-    private Option(String str)
-    {
-        description = str;
-    }
-    
-    public String getDescription()
-    {
-        return description;
-    }
-}
-
-public void process() {
-    Option command; 
-    do {
-    	displayHelp();
-        command = getCommand();
-        switch (command) {
-            case SHOW_CART:                    showCart();
-                                    break;
-            case REMOVE_CART:                  removeCart();
-                                    break;
-            case ADD_CART:                     addCart();
-                                    break;
-            case CHANGE_CART:                  changeCart();
-                                    break;
-            case HELP:                         displayHelp();
-                                    break;
-            case EXIT:                         logout();
-                                    break;   
-        default:                System.out.println("Invalid choice");                               
-        }  
-    } while (command != Option.EXIT);
+	public void process() {
+		frame = WarehouseContext.instance().getFrame();
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    JPanel cartPane = new JPanel();
+	    BoxLayout boxlayout = new BoxLayout(cartPane, BoxLayout.Y_AXIS);
+	    cartPane.setLayout(boxlayout);
+	    
+	    //button and listeners
+	    showCartButton = new JButton("Show Cart"); 
+	    changeCartButton = new JButton("Change Quantity of Product in Cart"); 
+	    addCartButton = new JButton("Add to Cart"); 
+	    removeCartButton = new JButton("Remove an Product from the Cart");  
+	    Logout  = new JButton("Logout"); 
+	    showCartButton.addActionListener(this);
+	    changeCartButton.addActionListener(this);
+	    addCartButton.addActionListener(this);
+	    removeCartButton.addActionListener(this);
+	    Logout.addActionListener(this);
+	    
+	    //label
+	    clientMenuLabel = new JLabel("Modify Cart");
+	    clientMenuLabel.setFont(new Font("Helvetica", Font.PLAIN, 20));
+	    
+	    //center align
+	    clientMenuLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    showCartButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    changeCartButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    addCartButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    removeCartButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    Logout.setAlignmentX(Component.CENTER_ALIGNMENT);
+	    
+	    //adding to pane
+	    cartPane.add(clientMenuLabel);
+	    cartPane.add(this.showCartButton);
+	    cartPane.add(this.changeCartButton);
+	    cartPane.add(this.addCartButton);
+	    cartPane.add(this.removeCartButton);
+	    cartPane.add(this.Logout);
+	    frame.getContentPane().add(cartPane);
+	    frame.setVisible(true);
+	    frame.paint(frame.getGraphics()); 
+	    frame.toFront();
+	    frame.requestFocus();
   }
+
+	public void actionPerformed(ActionEvent event) {
+		if (event.getSource().equals(this.showCartButton)){
+			this.showCart();
+		}
+		else if(event.getSource().equals(this.changeCartButton)){
+			this.changeCart();
+		}
+		else if(event.getSource().equals(this.addCartButton)){
+			this.addToCartMenu();
+		}
+		else if(event.getSource().equals(this.removeCartButton)){
+			this.removeCartMenu();
+		}
+		else if(event.getSource().equals(this.continueProcessing)){
+			String id = productIdField.getText();
+			int quant = Integer.parseInt(quantityField.getText()); 
+			this.updateItemInCart(id,quant);
+			clear();
+			this.process();
+		}
+		else if(event.getSource().equals(this.addToCart)){
+			String id = addItemPIDField.getText();
+			int quant = Integer.parseInt(addItemQuantField.getText()); 
+			this.addCart(id, quant);
+			clear();
+			this.process();
+		}
+		else if(event.getSource().equals(this.removeFromCart)){
+			String id = removeItemPIDField.getText();
+			this.removeCart(id);
+			clear();
+			this.process();
+		}
+		else if(event.getSource().equals(this.back)){
+			clear();
+			this.process();
+		}
+		else {
+			clear();
+			this.logout();
+			
+		}
+	}
 //====================================================================
 // Modify Cart Methods 
 //====================================================================
     private void showCart(){
+    	clear();
+    	JPanel textbox = new JPanel();
+    	JPanel backbutton = new JPanel();
+    	frame = WarehouseContext.instance().getFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        textArea = new JTextArea(15, 32);
+        textbox.add(new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
+                JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS));
+        back = new JButton("Back");
+        back.addActionListener(this);
+        backbutton.add(back);
+        frame.add(textbox);
+        frame.add(backbutton);
+        frame.setVisible(true); 
+        frame.paint(frame.getGraphics());
+	    frame.toFront();
+	    frame.requestFocus();
+	    this.redirectSystemStreams();
         Warehouse warehouse = Warehouse.getInstance();
         String clientId = WarehouseContext.instance().getCurrentUser();
 		
@@ -126,81 +200,107 @@ public void process() {
     }
 
     public void changeCart(){
+    	clear();
+    	frame = WarehouseContext.instance().getFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JPanel updateCartPanel = new JPanel();
+        JPanel updatePICartPanel = new JPanel();
+        BoxLayout boxlayout = new BoxLayout(updateCartPanel, BoxLayout.Y_AXIS);
+        updateCartPanel.setLayout(boxlayout);
+	    continueProcessing = new JButton("Change");
+	    continueProcessing.addActionListener(this);
+	    productIdField = new JTextField(10);
+	    frame.getContentPane().setLayout(new FlowLayout());
+	    quantityField = new JTextField(10);
+	    quantityLabel = new JLabel("Quantity:");
+	    ProductIdLabel = new JLabel("Product ID:");
+	    
+	    frame.add(this.ProductIdLabel);
+	    frame.add(this.productIdField);
+	    frame.add(Box.createHorizontalStrut(10));
+	    frame.add(this.quantityLabel);
+	    frame.add(this.quantityField);
+	    frame.add(Box.createHorizontalStrut(10));
+	    frame.add(this.continueProcessing);
+	    frame.setVisible(true);
+	    frame.paint(frame.getGraphics());
+	    frame.toFront();
+	    frame.requestFocus();
+	    
+    }
+    
+    public void updateItemInCart(String pid, int quantity) {
         Warehouse warehouse = Warehouse.getInstance();
         String clientId = WarehouseContext.instance().getCurrentUser();
-		String productId = getToken("Enter the product ID of the item being modified in the cart.");
-		
-		boolean itemInCart = warehouse.isProductInCart(clientId, productId);
-		
+		boolean itemInCart = warehouse.isProductInCart(clientId, pid);
 		if (itemInCart == true)
 		{
-			String quantityStr = getToken("Enter the new quantity of item in cart.");
-			int quantity = Integer.parseInt(quantityStr);
-			
-			boolean result = warehouse.updateProductInCart(clientId, productId, quantity);
-			if (result == false)
-			{
-				System.out.println("Failed to update " + productId + " in the cart of " + clientId);
-			}
-			else
-			{
-				System.out.println("Successfully updated quantity of " + productId + " to " + quantity + " from the cart of " + clientId);
-			}
-		}
-		else
-		{
-			System.out.println("Product " + productId + " not found in the cart of " + clientId);
+			boolean result = warehouse.updateProductInCart(clientId, pid, quantity);
 		}
     }
 
-    public void addCart(){
+    public void addToCartMenu() {
+    	clear();
+    	frame = WarehouseContext.instance().getFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JPanel updateCartPanel = new JPanel();
+        BoxLayout boxlayout = new BoxLayout(updateCartPanel, BoxLayout.Y_AXIS);
+        updateCartPanel.setLayout(boxlayout);
+        
+        addItemPIDLabel = new JLabel("Poduct Id of item you want to add.");
+        addItemQuantLabel = new JLabel("Quantity of item you want to add.");
+        addToCart = new JButton("Add to Cart");
+        addItemPIDField = new JTextField(10);
+        addItemQuantField = new JTextField(10);
+	    frame.getContentPane().setLayout(new FlowLayout());
+	    
+	    frame.add(this.addItemPIDLabel);
+	    frame.add(this.addItemPIDField);
+	    frame.add(this.addItemQuantLabel);
+	    frame.add(this.addItemQuantField);
+	    frame.add(this.addToCart);
+	    frame.setVisible(true);
+	    frame.paint(frame.getGraphics());
+	    frame.toFront();
+	    frame.requestFocus();
+	    
+	    addToCart.addActionListener(this);
+    }
+    
+    public void addCart(String productId, int quantity){
         Warehouse warehouse = Warehouse.getInstance();
         String clientId = WarehouseContext.instance().getCurrentUser();
-		String productId = getToken("Enter the product ID of the item being added to the cart.");
-		String quantityStr = getToken("Enter quantity of item being added to cart.");
-		
-		int quantity = Integer.parseInt(quantityStr);
-		if (quantity <= 0)
-		{
-			System.out.println("Quantity of item added to cart cannot be below 0!");
-		}
-		else
-		{
-			boolean result = warehouse.addToCart(clientId, productId, quantity);
-			if (result == false)
-			{
-				System.out.println("Failed to add " + productId + " (x" + quantity +") to the cart of " + clientId);
-			}
-			else
-			{
-				System.out.println("Successfully added " + productId + " (x" + quantity + ") to the cart of " + clientId);
-			}
-		}
+		boolean result = warehouse.addToCart(clientId, productId, quantity);
     }
 
-    public void removeCart(){
+    public void removeCartMenu() {
+    	clear();
+    	frame = WarehouseContext.instance().getFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JPanel updateCartPanel = new JPanel();
+        BoxLayout boxlayout = new BoxLayout(updateCartPanel, BoxLayout.Y_AXIS);
+        updateCartPanel.setLayout(boxlayout);
+        
+        removeItemPIDLabel = new JLabel("Poduct Id:");
+        removeFromCart = new JButton("Remove from cart");
+        removeItemPIDField = new JTextField(10);
+	    
+	    updateCartPanel.add(this.removeItemPIDLabel);
+	    updateCartPanel.add(this.removeItemPIDField);
+	    frame.add(updateCartPanel);
+	    frame.add(this.removeFromCart);
+	    frame.setVisible(true);
+	    frame.paint(frame.getGraphics());
+	    frame.toFront();
+	    frame.requestFocus();
+	    
+	    removeFromCart.addActionListener(this);
+    }
+    
+    public void removeCart(String productId){
         Warehouse warehouse = Warehouse.getInstance();
         String clientId = WarehouseContext.instance().getCurrentUser();
-		String productId = getToken("Enter the product ID of the item being removed from the cart.");
-		
-		boolean itemInCart = warehouse.isProductInCart(clientId, productId);
-		
-		if (itemInCart == true)
-		{
-			boolean result = warehouse.removeFromCart(clientId, productId);
-			if (result == false)
-			{
-				System.out.println("Failed to remove " + productId + " from the cart of " + clientId);
-			}
-			else
-			{
-				System.out.println("Successfully removed " + productId + " from the cart of " + clientId);
-			}
-		}
-		else
-		{
-			System.out.println("Product " + productId + " not found in the cart of " + clientId);
-		}
+		boolean result = warehouse.removeFromCart(clientId, productId);
     }
 
     public void logout(){
@@ -209,68 +309,44 @@ public void process() {
 //====================================================================
 // Auxilary Methods
 //====================================================================
-private void displayHelp()
-{
-    System.out.println("Enter a number associated with a command seen below");
-    System.out.println("---------------------------------------------------");
-    Option options[] = Option.values();
-    
-    for (Option opt : options)
-    {
-        System.out.println(opt.ordinal() + " - " + opt.getDescription());
-    }
-    System.out.println("---------------------------------------------------");
-}
 
-private String getToken(String prompt)
-{
-    do
-    {
-        try
-        {
-            System.out.println(prompt);
-            String line = reader.readLine();
-            StringTokenizer tokenizer = new StringTokenizer(line, "\n\r\f");
-            if (tokenizer.hasMoreTokens())
-            {
-                return tokenizer.nextToken();
-            }
-        }
-        catch (IOException ioe)
-        {
-            System.exit(0);
-        }
-    } while (true);
-}
 
-private Option getCommand()
-{
-    do
-    {
-        try
-        {
-            String token = getToken("Enter a command. Use " + Option.HELP.ordinal() + " to display the menu.");
-            int value = Integer.parseInt(token);
-            if (value >= 0 && value <= Option.LENGTH)
-            {
-                return Option.values()[value];
-            }
-            else
-            {
-                System.out.println("Input command out of range!");
-            }
-        }
-        catch (NumberFormatException nfe)
-        {
-            System.out.println("Invalid input - Please enter a valid number!");
-        }
-    } while (true);
-}
+	private void updateTextArea(final String text) {
+	    SwingUtilities.invokeLater(new Runnable() {
+	      public void run() {
+	        textArea.append(text);
+	      }
+	    });
+	  }
+	
+	private void redirectSystemStreams() {
+	    OutputStream out = new OutputStream() {
+	      @Override
+	      public void write(int b) throws IOException {
+	        updateTextArea(String.valueOf((char) b));
+	      }
+	
+	      @Override
+	      public void write(byte[] b, int off, int len) throws IOException {
+	        updateTextArea(new String(b, off, len));
+	      }
+	
+	      @Override
+	      public void write(byte[] b) throws IOException {
+	        write(b, 0, b.length);
+	      }
+	    };
+	
+	    System.setOut(new PrintStream(out, true));
+	    System.setErr(new PrintStream(out, true));
+	  }
+
+	public void clear() { 
+	    frame.getContentPane().removeAll();
+	    frame.paint(frame.getGraphics());   
+	  }  
     
     public void run() {
-        System.out.println("===============================");
-        System.out.println("   Modify Client Catr Menu     ");
-        System.out.println("===============================");
         process();
     }
 }

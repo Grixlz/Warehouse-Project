@@ -495,7 +495,7 @@ public class Warehouse implements Serializable
 	{
 		try
 		{
-			FileInputStream file = new FileInputStream(new File("WarehouseData.txt"));
+			FileInputStream file = new FileInputStream(new File("src/WarehouseData.txt"));
 			ObjectInputStream input = new ObjectInputStream(file);
 			input.readObject();
 			IDServer.retrieve(input);
